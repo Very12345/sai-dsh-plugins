@@ -1,0 +1,4 @@
+- insert:
+    - id: sai-pet
+      name: '@sai/dsh-pet'
+      inject: [saiAndroid, sessions]

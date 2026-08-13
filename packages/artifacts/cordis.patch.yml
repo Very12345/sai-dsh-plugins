@@ -1,0 +1,4 @@
+- insert:
+    - id: sai-artifacts
+      name: '@sai/dsh-artifacts'
+      inject: [saiAndroid]

@@ -1,0 +1,3 @@
+- insert:
+    - id: sai-ui
+      name: '@sai/dsh-ui'

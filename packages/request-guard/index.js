@@ -1,0 +1,4 @@
+export const name='sai-request-guard'
+export const inject=['llm']
+class Gate{active=0;waiters=[];constructor(limit){this.limit=limit}async acquire(signal){if(this.active<this.limit){this.active++;return()=>this.release()}return new Promise((resolve,reject)=>{const waiter=()=>{this.active++;resolve(()=>this.release())};this.waiters.push(waiter);signal?.addEventListener('abort',()=>{const index=this.waiters.indexOf(waiter);if(index>=0)this.waiters.splice(index,1);reject(signal.reason??new Error('aborted'))},{once:true})})}release(){this.active--;this.waiters.shift()?.()}}
+export function apply(ctx,config={}){const gates=new Map();const limit=Math.max(1,Math.min(8,config.maxConcurrentPerProvider??2));ctx.on('llm/stream',(options,next)=>(async function*(){const key=`${options.provider}\u0000${options.model}`;const gate=gates.get(key)??gates.set(key,new Gate(limit)).get(key);const release=await gate.acquire(options.signal);try{yield* next()}finally{release()}})())}

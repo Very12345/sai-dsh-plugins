@@ -1,0 +1,4 @@
+- insert:
+    - id: sai-request-guard
+      name: '@sai/dsh-request-guard'
+      config: { maxConcurrentPerProvider: 2 }

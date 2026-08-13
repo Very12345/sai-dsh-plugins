@@ -1,0 +1,19 @@
+{
+  "name": "@sai/dsh-legacy-import",
+  "version": "0.1.0",
+  "type": "module",
+  "license": "GPL-3.0-only",
+  "main": "index.js",
+  "files": ["index.js", "cordis.patch.yml"],
+  "dsh": { "bundle": { "patch": "./cordis.patch.yml" } },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "^4.0.1",
+    "@deepseek-ai/dsh-session": "^0.1.0-rc.6",
+    "@deepseek-ai/dsh-llm": "^0.1.0-rc.6"
+  },
+  "sai": {
+    "dshVersion": ">=0.1.0-rc.6 <0.2.0",
+    "permissions": ["dsh.sessions.migrate"],
+    "androidBridge": ">=1"
+  }
+}

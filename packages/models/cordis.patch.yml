@@ -1,0 +1,3 @@
+- insert:
+    - id: sai-models
+      name: '@sai/dsh-models'

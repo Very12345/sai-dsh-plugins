@@ -1,0 +1,4 @@
+- insert:
+    - id: sai-voice
+      name: '@sai/dsh-voice'
+      inject: [saiAndroid]

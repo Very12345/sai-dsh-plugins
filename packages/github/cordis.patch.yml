@@ -1,0 +1,4 @@
+- insert:
+    - id: sai-github
+      name: '@sai/dsh-github'
+      inject: [saiAndroid]

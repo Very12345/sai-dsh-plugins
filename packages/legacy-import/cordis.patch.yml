@@ -1,0 +1,4 @@
+- insert:
+    - id: sai-legacy-import
+      name: '@sai/dsh-legacy-import'
+      inject: [sessions]

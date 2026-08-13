@@ -1,0 +1,3 @@
+- insert:
+    - id: sai-android
+      name: '@sai/dsh-android'
