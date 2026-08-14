@@ -28,15 +28,19 @@
     @media (max-width: 600px) {
       [role='dialog'] {
         width: calc(100vw - 24px) !important;
-        height: auto !important;
-        max-height: none !important;
-        overflow: auto !important;
+        height: fit-content !important;
+        min-height: 0 !important;
+        max-height: min(78dvh, 640px) !important;
+        overflow-x: hidden !important;
+        overflow-y: auto !important;
         border-radius: 18px !important;
       }
       [role='dialog'] > div {
-        max-height: none !important;
-        min-height: min-content !important;
-        overflow: visible !important;
+        height: fit-content !important;
+        min-height: 0 !important;
+        max-height: min(72dvh, 580px) !important;
+        overflow-x: hidden !important;
+        overflow-y: auto !important;
       }
     }
   `
