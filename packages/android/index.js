@@ -1,7 +1,7 @@
 import { defineTool } from '@deepseek-ai/dsh-tools'
 export const name = 'sai-android'
 export const inject = ['tools', 'systemPrompt']
-const OPERATIONS = new Set(['observe_device','device_action','browser','speak','notify','task_status','github'])
+const OPERATIONS = new Set(['observe_device','device_action','browser','speak','export','open_url','notify','task_status','github'])
 async function callBridge(operation, payload, signal) {
   const endpoint = process.env.SAI_BRIDGE_URL
   const token = process.env.SAI_BRIDGE_TOKEN
