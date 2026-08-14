@@ -27,3 +27,13 @@ test('vision plugin routes image evidence without changing the main model', asyn
   assert.match(source, /const provider = agent\.options\.provider/)
   assert.match(source, /sai visual observation/)
 })
+
+test('mobile UI bounds popup height and safely normalizes legacy custom permissions', async () => {
+  const client = await readFile(new URL('../packages/ui/client.js', import.meta.url), 'utf8')
+  const host = await readFile(new URL('../packages/ui/index.js', import.meta.url), 'utf8')
+  assert.match(client, /max-height: min\(78dvh, 640px\)/)
+  assert.doesNotMatch(client, /\[role='dialog'\][\s\S]*?max-height: none/)
+  assert.match(host, /current\(session\.events\) !== 'custom'/)
+  assert.match(host, /sandbox === 'read-only' \? 'read-only' : 'workspace-write'/)
+  assert.doesNotMatch(host, /'danger-full-access'/)
+})
