@@ -1,10 +1,44 @@
 import { defineTool } from '@deepseek-ai/dsh-tools'
-export const name='sai-voice'
-export const inject=['tools','systemPrompt','saiAndroid']
-export function apply(ctx, config = {}){
+
+export const name = 'sai-voice'
+export const inject = ['tools', 'systemPrompt', 'saiAndroid']
+
+const ACTIVE_VOICE_POLICY = `SAI VOICE CALL MODE IS ACTIVE.
+The user cannot hear ordinary assistant text. Before completing EVERY response, you MUST call speak exactly once with the short spoken result the user needs now. Do not merely say that you would speak and do not omit the call after using other tools.
+The speak text must be one or two concise plain-text sentences. Never include Markdown, code, diffs, logs, URLs, secrets, tool syntax, or emoji. Keep full technical detail in the visible response.
+The microphone remains live while you work and while speech is playing. If a new user/steer message arrives, stop following the superseded direction and answer the newest request.`
+
+export function apply(ctx, config = {}) {
   if (config.promptOnly === true) {
-    ctx.systemPrompt.section({name:'sai:voice-active',order:119,text:'VOICE CALL MODE IS ACTIVE. You MUST call the speak tool exactly once in every completed response. The speak text is the only audio the user hears: make it a direct, useful summary of at most two short sentences. Continue useful detail in visible text. Never speak reasoning, code, diffs, logs, URLs, secrets, or emoji. If the user interrupts, immediately follow the changed direction.'})
+    ctx.systemPrompt.section({ name: 'sai:voice-active', order: 119, text: ACTIVE_VOICE_POLICY })
     return
   }
-  ctx.tools.register(defineTool({name:'speak',description:'Broadcast a short voice reply through sai. Call this exactly once when the sai voice-call preset says voice mode is active; normal assistant text is not spoken.',parameters:{text:{type:'string',required:true,description:'At most two concise plain-text sentences without emoji.'}},output:{schema:{type:'string'},render:()=>[]},execute:({text},runtime)=>ctx.saiAndroid.call('speak',{text},runtime?.signal)}))
+
+  ctx.systemPrompt.section({
+    name: 'sai:voice-tool',
+    order: 119,
+    text: 'The speak tool is for sai voice-call sessions only. In ordinary text sessions, do not call it unless the user explicitly asks for text to be read aloud.',
+  })
+  // Voice mode is model-facing policy, never a visible user message. The
+  // native service creates its sessions with the sai-voice preset, letting
+  // this stable system-prompt layer activate only for those sessions.
+  ctx.on('system-prompt/assemble', async (assembly, context, next) => {
+    if (context.agent?.session?.header?.agentPreset === 'sai-voice') {
+      assembly.sections.push({ name: 'sai:voice-active', text: ACTIVE_VOICE_POLICY })
+    }
+    return next()
+  })
+  ctx.tools.register(defineTool({
+    name: 'speak',
+    description: 'Read a short plain-text message aloud through sai. In the sai voice-call preset this tool is mandatory exactly once per completed response.',
+    parameters: {
+      text: { type: 'string', required: true, description: 'One or two concise sentences, 1..300 characters, without Markdown, code, URLs, secrets, or emoji.' },
+    },
+    output: { schema: { type: 'string' }, render: () => [] },
+    execute: async ({ text }, runtime) => {
+      const spoken = String(text ?? '').trim()
+      if (!spoken || spoken.length > 300) throw new Error('speak text must contain 1..300 characters')
+      return ctx.saiAndroid.call('speak', { text: spoken }, runtime?.signal)
+    },
+  }))
 }

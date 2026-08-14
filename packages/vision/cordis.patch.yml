@@ -1,0 +1,3 @@
+- insert:
+    - id: sai-vision
+      name: '@sai/dsh-vision'

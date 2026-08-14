@@ -1,0 +1,17 @@
+{
+  "name": "@sai/dsh-vision",
+  "version": "0.1.0",
+  "type": "module",
+  "license": "GPL-3.0-only",
+  "main": "index.js",
+  "files": ["index.js", "cordis.patch.yml", "README.md"],
+  "dsh": { "bundle": { "patch": "./cordis.patch.yml" } },
+  "peerDependencies": {
+    "@deepseek-ai/dsh-agent": "^0.1.0-rc.6",
+    "@deepseek-ai/dsh-llm": "^0.1.0-rc.6"
+  },
+  "sai": {
+    "dshVersion": ">=0.1.0-rc.6 <0.2.0",
+    "permissions": ["model.inference", "attachments.read"]
+  }
+}
