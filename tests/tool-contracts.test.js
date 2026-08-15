@@ -38,9 +38,10 @@ test('mobile UI bounds popup height and safely normalizes legacy custom permissi
   assert.doesNotMatch(host, /'danger-full-access'/)
 })
 
-test('market uses the live dsh-plugin topic and warns instead of blocking unknown licenses', async () => {
+test('market uses the curated awesome-dsh-plugin catalog and warns instead of blocking unknown licenses', async () => {
   const source = await readFile(new URL('../packages/market/index.js', import.meta.url), 'utf8')
-  assert.match(source, /topic:'dsh-plugin'/)
+  assert.match(source, /catalog:'awesome-dsh-plugin\/awesome-dsh-plugin'/)
+  assert.match(source, /curated:true/)
   assert.match(source, /typoAliases:\['dsh-puglin'\]/)
   assert.match(source, /requireLicense:false/)
   assert.match(source, /warnOnUnknownLicense:true/)
