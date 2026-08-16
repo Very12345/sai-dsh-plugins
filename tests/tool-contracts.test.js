@@ -11,11 +11,11 @@ test('voice plugin registers speak and enforces active-call tool use', async () 
   assert.match(source, /header\?\.agentPreset === 'sai-voice'/)
 })
 
-test('artifacts plugin registers in-app open, save, share and URL tools', async () => {
+test('artifacts plugin leaves file export to the native manager and only exposes URL opening', async () => {
   const source = await readFile(new URL('../packages/artifacts/index.js', import.meta.url), 'utf8')
-  assert.match(source, /name:\s*'export_artifact'/)
-  assert.match(source, /enum:\s*\['open', 'save', 'share'\]/)
-  assert.match(source, /ctx\.saiAndroid\.call\('export'/)
+  assert.doesNotMatch(source, /name:\s*'export_artifact'/)
+  assert.doesNotMatch(source, /ctx\.saiAndroid\.call\('export'/)
+  assert.match(source, /native sai file manager/)
   assert.match(source, /name:\s*'open_url'/)
   assert.match(source, /ctx\.saiAndroid\.call\('open_url'/)
 })
