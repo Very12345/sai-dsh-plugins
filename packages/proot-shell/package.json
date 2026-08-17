@@ -1,0 +1,17 @@
+{
+  "name": "@sai/dsh-proot-shell",
+  "version": "0.1.0",
+  "type": "module",
+  "license": "GPL-3.0-only",
+  "main": "index.js",
+  "files": ["index.js", "README.md"],
+  "peerDependencies": {
+    "@deepseek-ai/dsh-bash-local": "^0.1.0-rc.5",
+    "@deepseek-ai/dsh-sandbox-policy": "^0.1.0-rc.5"
+  },
+  "sai": {
+    "dshVersion": ">=0.1.0-rc.6 <0.2.0",
+    "bridge": ">=1",
+    "permissions": ["shell.proot"]
+  }
+}
