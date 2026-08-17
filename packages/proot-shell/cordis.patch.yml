@@ -1,0 +1,5 @@
+- insert:
+    - id: sai-proot-shell
+      name: '@sai/dsh-proot-shell'
+      config:
+        timeoutMs: 60000

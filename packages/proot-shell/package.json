@@ -4,7 +4,12 @@
   "type": "module",
   "license": "GPL-3.0-only",
   "main": "index.js",
-  "files": ["index.js", "README.md"],
+  "files": ["index.js", "cordis.patch.yml", "README.md"],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
   "peerDependencies": {
     "@deepseek-ai/dsh-bash-local": "^0.1.0-rc.5",
     "@deepseek-ai/dsh-sandbox-policy": "^0.1.0-rc.5"
